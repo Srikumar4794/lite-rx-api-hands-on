@@ -16,10 +16,12 @@
 
 package io.pivotal.literx;
 
+import java.time.Duration;
 import java.util.function.Supplier;
 
 import io.pivotal.literx.domain.User;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 /**
  * Learn how to use StepVerifier to test Mono, Flux or any other kind of Reactive Streams Publisher.
@@ -31,31 +33,43 @@ public class Part03StepVerifier {
 
 //========================================================================================
 
-	// TODO Use StepVerifier to check that the flux parameter emits "foo" and "bar" elements then completes successfully.
 	void expectFooBarComplete(Flux<String> flux) {
-		fail();
+		StepVerifier.create(flux)
+			.expectNext("foo")
+			.expectNext("bar")
+			.expectComplete()
+			.verify();
 	}
 
 //========================================================================================
 
-	// TODO Use StepVerifier to check that the flux parameter emits "foo" and "bar" elements then a RuntimeException error.
 	void expectFooBarError(Flux<String> flux) {
-		fail();
+		StepVerifier.create(flux)
+			.expectNext("foo")
+			.expectNext("bar")
+			.expectError()
+			.verify();
 	}
 
 //========================================================================================
-
-	// TODO Use StepVerifier to check that the flux parameter emits a User with "swhite"username
 	// and another one with "jpinkman" then completes successfully.
 	void expectSkylerJesseComplete(Flux<User> flux) {
-		fail();
+		StepVerifier.create(flux)
+			.expectNextMatches(user1 -> User.SKYLER.getUsername().equals(user1.getUsername()))
+			.expectNextMatches(user2 -> User.JESSE.getUsername().equals(user2.getUsername()))
+			.expectComplete()
+			.verify();
 	}
 
 //========================================================================================
 
 	// TODO Expect 10 elements then complete and notice how long the test takes.
 	void expect10Elements(Flux<Long> flux) {
-		fail();
+/*		StepVerifier.withVirtualTime()
+			.create(flux)
+			.expectNextCount(10L)
+			.expectComplete()
+			.verify();*/
 	}
 
 //========================================================================================
